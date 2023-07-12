@@ -1,0 +1,40 @@
+#include<iostream>
+#include<vector>
+using namespace std;
+typedef pair<int, int> ii;
+
+#define fi first
+#define se second
+
+vector<int> dsu; // resources, the kingdom it is under
+
+int find(int n) {
+    if (dsu[n] == n) return n;
+    return dsu[n] = find(dsu[n]);
+}
+
+void merge(int x, int y) {
+    x = find(x); y = find(y);
+    if (x == y) return;
+    if (dsu[x].fi < dsu[y].fi) {
+        swap(x, y);
+    }
+
+    dsu[x].fi += dsu[y].fi;
+    dsu[y].se = x;
+}
+
+int main() {
+    int n, m; cin >> n >> m;
+    dsu.resize(n);
+
+    for (int i = 0; i < n; i++) {
+        cin >> dsu[i].fi;
+        dsu[i].se = i;
+    }
+
+    for (int i = 0; i < m; i++) {
+        int a, b; cin >> a >> b;
+        merge(a, b);
+    }
+}
